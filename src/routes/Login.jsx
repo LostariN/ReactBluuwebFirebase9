@@ -6,42 +6,42 @@ import { formaValidate } from "../utils/formValidate"
 import { erroresFirebase } from "../utils/erroresFirebase"
 
 import FormError from "../components/FormError"
-import { FormInput } from "../components/FormInput"
+import FormInput from "../components/FormInput"
+import FormTitle from "../components/FormTitle"
+import FormButton from "../components/FormButton"
 
 const Login = () => {
     const { loginUser } = useContext(UserContext)
-    const navigate = useNavigate()
-    const { register, handleSubmit, formState: { errors }, setError } = useForm({
-        defaultValues: {
-            email: "lostarin2@test.com",
-            password: 123456
-        }
-    })
 
-    const { required, patternEmail, minLength, maxLength, validateSpaces } = formaValidate()
+    const navigate = useNavigate()
+
+    const { register, handleSubmit, formState: { errors }, setError } = useForm()
+
+    const { required, patternEmail, minLength, maxLength, validateSpaces, validatePassRePass } = formaValidate()
+
     const onSubmit = async ({ email, password }) => {
         try {
             await loginUser(email, password)
             navigate('/')
         } catch (error) {
             console.log(error.code)
-            setError("firebase", {
-                message: erroresFirebase(error.code)
-            })
+            const { code, message } = erroresFirebase(error.code)
+            setError(code, { message })
         }
     }
-
     return (
         <div>
-            <h1>loginaaa</h1>
-            <FormError error={errors.firebase} />
-            <form onSubmit={handleSubmit(onSubmit)}>.
+
+            <FormTitle text="Login" />
+            <form onSubmit={handleSubmit(onSubmit)}>
+
                 <FormInput
                     type="email" placeholder="Ingrese su email" {...register("email",
                         {
                             required,
                             pattern: patternEmail
                         })}
+                    label="Ingresa tu Email"
                 ></FormInput>
                 <FormError error={errors.email} />
 
@@ -52,10 +52,13 @@ const Login = () => {
                         maxLength,
                         validate: validateSpaces
                     })}
+                    label="Ingresa tu Password"
                 > </FormInput>
+
                 <FormError error={errors.password} />
 
-                <button type="submit">Login</button>
+
+                <FormButton text="Acceder" />
             </form>
         </div>
     )

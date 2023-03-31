@@ -23,8 +23,8 @@ const formaValidate = () => {
                 return true
             }
         },
-        validatePassRePass(getValues) {
-            return v => v === getValues("password") || "Passwords doesnt equals"
+        validatePassRePass(value) {
+            return v => v === value || "Passwords doesnt equals"
         }
     }
 }

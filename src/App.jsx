@@ -8,6 +8,7 @@ import RequireAuth from './components/RequireAuth'
 import Register from './routes/Register'
 import { useContext } from 'react'
 import { UserContext } from './context/UserContext'
+import LayoutPrimary from './components/LayoutPrimary'
 
 
 const App = () => {
@@ -27,9 +28,10 @@ const App = () => {
             <Home />
           </RequireAuth>
         } />
-
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        <Route path="/" element={<LayoutPrimary />}>
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
+        </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>
 
